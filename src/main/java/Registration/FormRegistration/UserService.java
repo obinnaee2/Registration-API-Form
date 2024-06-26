@@ -5,8 +5,12 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class UserService {
-    @Autowired
+
     private UserRepository userRepository;
+    @Autowired
+    public UserService(UserRepository userRepository){
+        this.userRepository=userRepository;
+    }
 
     public User createUser(User user) {
         if (userRepository.existsByEmail(user.getEmail())) {
