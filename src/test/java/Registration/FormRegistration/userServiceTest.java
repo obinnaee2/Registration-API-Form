@@ -23,8 +23,8 @@ public class userServiceTest {
     }
     @Test
     public void testingForSuccessfulUserCreation() {
-        User user = new User("Obi.ekwealor@gmail.com", "Obinna", "Ekwealor", "BackEnd Engineer", "Payaza");
-        when(userRepository.existsByEmail(anyString())).thenReturn(false);
+        User user = new User("Obi.ekwealor@gmail.com", "Obinna", "Ekwealor", "Backend Engineer", "Payaza");
+
         when(userRepository.save(any(User.class))).thenReturn(user);
         User createdUser = userService.createUser(user);
         assertNotNull(createdUser);
@@ -42,7 +42,6 @@ public class userServiceTest {
         RuntimeException exception = assertThrows(RuntimeException.class, () -> {
             userService.createUser(user);
         });
-
         assertEquals("Email already exists", exception.getMessage());
     }
 

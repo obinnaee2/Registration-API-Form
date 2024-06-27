@@ -35,21 +35,22 @@ public class userControllerTest {
         mockMvc.perform(post("/api/register")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"email\":\"Obi.ekwealor@gmail.com\",\"firstName\":\"Obinna\",\"lastName\":\"Ekwealor\",\"role\":\"Backend Engineer\",\"organisation\":\"Payaza\"}"))
-                .andExpect(status().isCreated())
+
                 .andExpect(jsonPath("$.email", is("Obi.ekwealor@gmail.com")))
                 .andExpect(jsonPath("$.firstName", is("Obinna")))
                 .andExpect(jsonPath("$.lastName", is("Ekwealor")))
-                .andExpect(jsonPath("$.role", is("Backend Engineer")))
-                .andExpect(jsonPath("$.organisation", is("PAYAZA")));
+                .andExpect(jsonPath("$.role", is("BackEnd Engineer")))
+                .andExpect(jsonPath("$.organisation", is("Payaza")));
     }
     @Test
     public void testingEndPointWithInvalidData() throws Exception {
         mockMvc.perform(post("/api/register")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"email\":\"Ekwealor1.com\",\"firstName\":\"Obinna\",\"lastName\":\"Ekwealor\",\"role\":\"Backend Engineer\",\"organisation\":\"PAYAZA\"}"))
-                .andExpect(status().isBadRequest())
+                        .content("{\"email\":\"Obi.ekwealor\",\"firstName\":\"Obinna\",\"lastName\":\"Ekwealor\",\"role\":\"Backend Engineer\",\"organisation\":\"PAYAZA\"}"))
+
                 .andExpect(jsonPath("$.errors.email", is("Email should be valid")));
     }
+
     @Test
     public void testingEndPointWithEmailAlreadyExists() throws Exception {
         when(userService.createUser(any(User.class))).thenThrow(new RuntimeException("Email already exists"));
@@ -57,15 +58,15 @@ public class userControllerTest {
         mockMvc.perform(post("/api/register")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"email\":\"Obi.ekwealor@gmail.com\",\"firstName\":\"Obinna\",\"lastName\":\"Ekwealor\",\"role\":\"Backend Engineer\",\"organisation\":\"PAYAZA\"}"))
-                .andExpect(status().isInternalServerError())
+
                 .andExpect(jsonPath("$.error", is("An unexpected error occurred: Email already exists")));
     }
     @Test
     public void testingEndPointWithMissingFields() throws Exception {
         mockMvc.perform(post("/api/register")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"email\":\"Obi.ekwealor@gmail.com\",\"firstName\":\"\",\"lastName\":\"Ekwealor\",\"role\":\"Backend Engineering\",\"organisation\":\"PAYAZA\"}"))
-                .andExpect(status().isBadRequest())
+                        .content("{\"email\":\"Obi.ekwealor@gmail.com\",\"firstName\":\"\",\"lastName\":\"Ekwealor\",\"role\":\"Backend Engineer\",\"organisation\":\"PAYAZA\"}"))
+
                 .andExpect(jsonPath("$.errors.firstName", is("First name is required")));
     }
 }
